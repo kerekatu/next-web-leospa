@@ -1,65 +1,100 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Layout from '@/layouts/layout'
+import { getAPI } from '@/lib/api'
+import styled from '@emotion/styled'
 
-export default function Home() {
+import About from '@/components/sections/about'
+import Hero from '@/components/sections/hero'
+import Procedures from '@/components/sections/procedures'
+import Recommendations from '@/components/sections/recommendations'
+import Team from '@/components/sections/team'
+import Contact from '@/components/sections/contact'
+
+export async function getStaticProps() {
+  const { data } = await getAPI({
+    hero: 'hero',
+    about: 'about',
+    treatment: 'treatment',
+    recommendation: 'recommendation',
+    team: 'team',
+  })
+
+  return {
+    props: {
+      data,
+    },
+  }
+}
+
+const Home = ({ data }) => {
+  const { hero, about, treatment, recommendation, team } = data
+
+  if (!data) return <></>
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Layout isHeaderHero metadata={{ title: 'Homepage' }}>
+      <HomeWrapper>
+        <Hero data={hero} />
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <About data={about} />
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+        <Procedures data={treatment} />
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        <Recommendations data={recommendation} />
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+        <Team data={team} />
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+        <Contact />
+      </HomeWrapper>
+    </Layout>
   )
 }
+
+const HomeWrapper = styled.div`
+  button {
+    border: none;
+    padding: 1.5rem 2.5rem;
+
+    &.primary {
+      background-color: var(--color-primary);
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--color-white);
+    }
+
+    &.secondary {
+      background-color: var(--color-black-2);
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--color-white);
+      border-radius: 100rem;
+      padding: 1.5rem 3rem;
+
+      &.active {
+        background-color: var(--color-primary);
+      }
+
+      &:hover {
+        background-color: var(--color-primary);
+      }
+    }
+
+    &.tertiary {
+      background-color: transparent;
+      color: var(--color-black-2);
+      font-size: var(--font-size-sm);
+      padding: 1.5rem;
+
+      span {
+        background-color: var(--color-secondary);
+        padding: 1.2rem;
+        border-radius: 100%;
+        color: var(--color-primary);
+        margin-right: 1rem;
+      }
+    }
+  }
+`
+
+export default Home
