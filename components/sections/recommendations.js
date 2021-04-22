@@ -1,4 +1,5 @@
 import CONSTANTS from '@/lib/constants'
+import { mq } from '@/styles/global'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -6,6 +7,18 @@ import { useEffect, useState } from 'react'
 const Recommendations = ({ data }) => {
   const [newestRec, setNewestRec] = useState([])
   const [selectedRec, setSelectedRec] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (selectedRec < newestRec.length - 1) {
+        setSelectedRec(selectedRec + 1)
+      } else {
+        setSelectedRec(0)
+      }
+    }, 6000)
+
+    return () => clearInterval(timer)
+  }, [newestRec, selectedRec])
 
   useEffect(() => {
     setNewestRec(
@@ -16,7 +29,7 @@ const Recommendations = ({ data }) => {
   }, [data])
 
   return (
-    <RecommendationsWrapper id="#recommendations">
+    <RecommendationsWrapper id="recommendations">
       <img src="/static/images/quote.png" alt="Quote Symbol" />
       <Link href="/recommendations">
         <a>
@@ -24,8 +37,8 @@ const Recommendations = ({ data }) => {
             <div
               className={
                 selectedRec === index
-                  ? 'recommendation active'
-                  : 'recommendation'
+                  ? 'recommendation wrapper active'
+                  : 'recommendation wrapper'
               }
               key={item._id}
             >
@@ -61,6 +74,10 @@ const RecommendationsWrapper = styled.section`
   background-color: var(--color-secondary-2);
   min-height: 50rem;
 
+  ${mq[1]} {
+    min-height: 60rem;
+  }
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,7 +88,6 @@ const RecommendationsWrapper = styled.section`
 
   .recommendation {
     display: none;
-    width: var(--page-width);
     font-family: var(--font-secondary);
     color: var(--color-black-2);
 
@@ -108,6 +124,11 @@ const RecommendationsWrapper = styled.section`
       border-radius: 100%;
       background-color: var(--color-primary);
       opacity: 0.6;
+      transition: opacity var(--transition);
+
+      &:hover {
+        opacity: 1;
+      }
 
       &.active {
         opacity: 1;

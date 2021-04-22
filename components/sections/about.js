@@ -1,22 +1,24 @@
 import styled from '@emotion/styled'
+import CustomLink from '../common/custom-link'
 import Title from '../common/title'
 
 const About = ({ data }) => {
   return (
-    <AboutWrapper id="#about">
+    <AboutWrapper id="about" className="wrapper">
       <img
         src="/static/images/butterfly.png"
         alt="Leospa Logotype (Butterfly)"
       />
       <h4 className="secondary">About our spa center</h4>
       <Title title={data.title} subtitle={data.content} />
-      <button className="secondary active">Read more</button>
+      <CustomLink href="/features" className="btn primary rounded">
+        Read more
+      </CustomLink>
     </AboutWrapper>
   )
 }
 
 const AboutWrapper = styled.section`
-  width: var(--page-width);
   display: flex;
   flex-direction: column;
   gap: 2.5rem;

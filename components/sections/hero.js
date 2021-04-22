@@ -1,8 +1,15 @@
 import styled from '@emotion/styled'
+import { Fragment, useState } from 'react'
+import CustomLink from '@/components/common/custom-link'
+import Modal from '@/components/common/modal'
+import { mq } from '@/styles/global'
 
 const Hero = ({ data }) => {
+  const [openModal, setOpenModal] = useState(false)
+
   return (
-    <HeroWrapper id="#hero">
+    <HeroWrapper id="hero">
+      {/* BACKGROUND FLOATING IMAGES */}
       <div className="spa">
         <img src="/static/images/spa.png" alt="Hero Image (Spa)" />
       </div>
@@ -21,20 +28,40 @@ const Hero = ({ data }) => {
           alt="Background Image (China Rose)"
         />
       </div>
+
       {data
         .filter((el) => el.show === true)
         .map((hero) => (
-          <div className="hero-content" key={hero._id}>
-            <h4>{hero.title1}</h4>
-            <h1>{hero.title2}</h1>
-            <p>{hero.content}</p>
-            <div className="cta">
-              <button className="primary">Reserve Now</button>
-              <button className="tertiary">
-                <span className="ti-control-play"></span>Watch our story
-              </button>
+          <Fragment key={hero._id}>
+            <div className="hero-content wrapper">
+              <h4>{hero.title1}</h4>
+              <h1>{hero.title2}</h1>
+              <p>{hero.content}</p>
+              <div className="cta">
+                <CustomLink href="#contact" className="btn primary">
+                  Reserve Now
+                </CustomLink>
+                <button className="tertiary" onClick={() => setOpenModal(true)}>
+                  <span className="ti-control-play"></span>Watch our story
+                </button>
+              </div>
             </div>
-          </div>
+            {openModal && (
+              <Modal
+                handleOpen={setOpenModal}
+                isFullscreen
+                render={() => (
+                  <iframe
+                    src={hero.link}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                )}
+              />
+            )}
+          </Fragment>
         ))}
     </HeroWrapper>
   )
@@ -43,46 +70,61 @@ const Hero = ({ data }) => {
 const HeroWrapper = styled.section`
   position: relative;
 
+  img {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+
   .spa {
     position: absolute;
     top: -20rem;
     right: 0;
     z-index: -1;
+    width: 45%;
+
+    ${mq[1]} {
+      display: none;
+    }
   }
 
   .leaf {
     position: absolute;
-    top: -10rem;
+    top: 0;
     left: 0;
     z-index: -2;
+    width: 13%;
   }
 
   .rose {
     position: absolute;
     bottom: -35rem;
-    left: 35rem;
+    left: 20%;
     z-index: -2;
   }
 
   .jasmine {
     position: absolute;
     bottom: -60rem;
-    right: 15rem;
+    right: 10%;
     z-index: -2;
+
+    ${mq[2]} {
+      display: none;
+    }
   }
 
   .hero-content {
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    width: var(--page-width);
     margin: 10rem auto 0 auto;
-  }
 
-  h1,
-  h4,
-  p {
-    width: clamp(30rem, var(--page-width), 25vw);
+    h1,
+    h4,
+    p {
+      max-width: clamp(50rem, var(--page-width), 25vw);
+    }
   }
 
   p {
@@ -93,7 +135,12 @@ const HeroWrapper = styled.section`
   .cta {
     margin-top: 2rem;
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
+
+    ${mq[0]} {
+      gap: 2rem;
+    }
   }
 `
 

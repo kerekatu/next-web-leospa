@@ -1,6 +1,11 @@
 import { css } from '@emotion/react'
+import { buttonStyles } from './buttons'
 import { fontStyles } from './fonts'
 import { headingStyles } from './headings'
+
+export const mq = [37.5, 50, 62.5].map(
+  (bp) => `@media only screen and (max-width: ${bp}em)`
+)
 
 const globalStyles = css`
   /* FONTS 
@@ -20,6 +25,7 @@ const globalStyles = css`
     --color-primary: #ff817e;
     --color-secondary: #fcf5ee;
     --color-secondary-2: #fff9f8;
+    --color-tertiary: #53ba83;
 
     --font-primary: 'Roboto', sans-serif;
     --font-secondary: 'Rufina', sans-serif;
@@ -34,6 +40,7 @@ const globalStyles = css`
     --line-heading: 1.2;
 
     --page-width: 100rem;
+    --transition: 0.15s ease-in-out;
   }
 
   /* BASE & RESET */
@@ -49,7 +56,11 @@ const globalStyles = css`
   html {
     font-size: 62.5%; // 10px
     box-sizing: border-box;
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth; */
+
+    ${mq[2]} {
+      font-size: 50%;
+    }
   }
 
   body {
@@ -95,15 +106,24 @@ const globalStyles = css`
   /* HELPERS */
 
   .wrapper {
-    width: var(--page-width);
+    max-width: var(--page-width);
     margin: 0 auto;
     padding: 4rem;
+
+    ${mq[1]} {
+      padding: 0 6rem;
+    }
+
+    ${mq[0]} {
+      padding: 0 2rem;
+    }
   }
 
   /* IMPORTS */
 
   ${headingStyles}
   ${fontStyles}
+  ${buttonStyles}
 `
 
 export default globalStyles

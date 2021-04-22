@@ -1,6 +1,6 @@
+import Navbar from '@/components/navbar'
 import CONSTANTS from '@/lib/constants'
 import styled from '@emotion/styled'
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const Footer = () => {
@@ -23,8 +23,6 @@ const Footer = () => {
     getFooterInfo()
   }, [])
 
-  console.log(footerInfo)
-
   return (
     <FooterWrapper>
       <div className="wrapper">
@@ -33,21 +31,7 @@ const Footer = () => {
           alt="Leospa Beauty Spa Logo"
           className="logo"
         />
-        <nav>
-          <ul>
-            {CONSTANTS.header.default.map((item, index) => (
-              <li key={index}>
-                {item.link.includes('#') ? (
-                  <a href={item.link}>{item.label}</a>
-                ) : (
-                  <Link href={item.link}>
-                    <a>{item.label}</a>
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <Navbar isFooter />
         <div className="info">
           {footerInfo ? (
             <>
@@ -59,11 +43,16 @@ const Footer = () => {
               <p>CVR: {footerInfo.cvr}</p>
               <p>
                 Email:{' '}
-                <a href={`mailto:${footerInfo.email}`}>{footerInfo.email}</a>
+                <a href={`mailto:${footerInfo.email}`} title="Write to us">
+                  {footerInfo.email}
+                </a>
               </p>
               <p>
                 Tlf.{' '}
-                <a href={`tel:+45${footerInfo.phone.replaceAll(' ', '')}`}>
+                <a
+                  href={`tel:+45${footerInfo.phone.replaceAll(' ', '')}`}
+                  title="Call us"
+                >
                   {footerInfo.phone}
                 </a>
               </p>
@@ -73,16 +62,16 @@ const Footer = () => {
           )}
         </div>
         <div className="social">
-          <a href="facebook.com" target="_blank">
+          <a href="facebook.com" target="_blank" title="Facebook">
             <i className="ti-facebook"></i>
           </a>
-          <a href="twitter.com" target="_blank">
+          <a href="twitter.com" target="_blank" title="Twitter">
             <i className="ti-twitter-alt"></i>
           </a>
-          <a href="vimeo.com" target="_blank">
+          <a href="vimeo.com" target="_blank" title="Vimeo">
             <i className="ti-vimeo-alt"></i>
           </a>
-          <a href="instagram.com" target="_blank">
+          <a href="instagram.com" target="_blank" title="Instagram">
             <i className="ti-instagram"></i>
           </a>
         </div>
@@ -99,6 +88,7 @@ const FooterWrapper = styled.footer`
   height: inherit;
   background-color: var(--color-secondary-2);
   text-align: center;
+  padding: 4rem 0;
 
   & > .wrapper {
     display: flex;
@@ -129,25 +119,31 @@ const FooterWrapper = styled.footer`
       border-right: 0.1rem solid var(--color-gray-2);
       padding-right: 1rem;
       line-height: 1;
+      transition: color var(--transition);
+
+      &:hover {
+        color: var(--color-primary);
+      }
     }
   }
 
   .info {
     font-weight: 300;
-
-    a {
-      color: var(--color-primary);
-      font-weight: 500;
-    }
   }
 
   .copyright {
     font-weight: 300;
     font-size: var(--font-size-sm);
+  }
 
-    a {
-      color: var(--color-primary);
-      font-weight: 500;
+  .info a,
+  .copyright a {
+    color: var(--color-primary);
+    font-weight: 500;
+    transition: opacity var(--transition);
+
+    &:hover {
+      opacity: 0.6;
     }
   }
 `

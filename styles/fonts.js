@@ -3,12 +3,12 @@ import { css } from '@emotion/react'
 export const fontStyles = css`
   @font-face {
     font-family: 'themify';
-    src: url('static/fonts/themify.eot?-fvbane');
-    src: url('static/fonts/themify.eot?#iefix-fvbane')
+    src: url('/static/fonts/themify.eot?-fvbane');
+    src: url('/static/fonts/themify.eot?#iefix-fvbane')
         format('embedded-opentype'),
-      url('static/fonts/themify.woff?-fvbane') format('woff'),
-      url('static/fonts/themify.ttf?-fvbane') format('truetype'),
-      url('static/fonts/themify.svg?-fvbane#themify') format('svg');
+      url('/static/fonts/themify.woff?-fvbane') format('woff'),
+      url('/static/fonts/themify.ttf?-fvbane') format('truetype'),
+      url('/static/fonts/themify.svg?-fvbane#themify') format('svg');
     font-weight: normal;
     font-style: normal;
   }

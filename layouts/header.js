@@ -1,60 +1,67 @@
-import CONSTANTS from '@/lib/constants'
+import Navbar from '@/components/navbar'
+import { mq } from '@/styles/global'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 
-const Header = ({ isHeaderHero }) => {
+const Header = ({ isHeaderHero, adminNavbar }) => {
   return (
     <HeaderWrapper isHeaderHero={isHeaderHero}>
-      <img className="logo" src="/static/images/logo.png" alt="Leospa Logo" />
-      <nav>
-        <ul>
-          {CONSTANTS.header.default.map((item, index) => (
-            <li key={index}>
-              {item.link.includes('#') ? (
-                <a href={item.link}>{item.label}</a>
-              ) : (
-                <Link href={item.link}>
-                  <a>{item.label}</a>
-                </Link>
-              )}
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <div className="header-content">
+        <Link href="/">
+          <a>
+            <img
+              className="logo"
+              src="/static/images/logo.png"
+              alt="Leospa Logo"
+            />
+          </a>
+        </Link>
+        <Navbar adminNavbar={adminNavbar} />
+      </div>
     </HeaderWrapper>
   )
 }
 
 const HeaderWrapper = styled.header`
-  ${({ isHeaderHero }) =>
-    isHeaderHero &&
-    `
+  height: inherit;
+
+  .header-content {
     display: flex;
-    justify-content: flex-start;
+    justify-content: ${({ isHeaderHero }) =>
+      isHeaderHero ? 'flex-start' : 'space-between'};
     align-items: flex-end;
-    width: var(--page-width);
-    height: inherit;
+    max-width: var(--page-width);
     margin: 0 auto;
+    padding: 0 4rem;
+    height: 100%;
 
-    .logo {
-      display: block;
-      pointer-events: none;
-      margin-right: 15rem;
+    ${mq[2]} {
+      width: 100%;
     }
 
-    nav ul {
-      display: flex;
-      gap: 0 3rem;
-      text-transform: uppercase;
+    ${mq[1]} {
+      justify-content: space-between;
+      padding: 0 6rem;
     }
 
-    nav a {
-      text-decoration: none;
-      color: var(--color-black-2);
-      font-size: var(--font-size);
-      font-weight: 400;
+    ${mq[0]} {
+      padding: 0 2rem;
     }
-`}
+  }
+
+  .logo {
+    display: block;
+    pointer-events: none;
+    margin-right: ${({ isHeaderHero }) => (isHeaderHero ? '15rem' : '0')};
+
+    ${mq[2]} {
+      height: 8rem;
+    }
+
+    ${mq[1]} {
+      margin-right: 0;
+    }
+  }
 `
 
 export default Header

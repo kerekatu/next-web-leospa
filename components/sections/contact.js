@@ -1,28 +1,117 @@
+import CONSTANTS from '@/lib/constants'
+import { appointmentSchema } from '@/lib/yup'
 import styled from '@emotion/styled'
-import React from 'react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { format } from 'date-fns'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { Form, FormInput, FormSelect } from '@/components/common/form'
+import Modal from '@/components/common/modal'
+import { mq } from '@/styles/global'
 
-const Contact = () => {
+const Contact = ({ data: treatment }) => {
+  const [openModal, setOpenModal] = useState(false)
+  const [appointmentDate, setAppointmentDate] = useState('')
+  const { register, handleSubmit, errors, reset } = useForm({
+    resolver: yupResolver(appointmentSchema),
+  })
+
+  const handleContactForm = handleSubmit(async (data) => {
+    try {
+      const res = await fetch(`${CONSTANTS.API_URL}/appointment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...data,
+          date: format(new Date(data.date), 'yyyy-MM-dd'),
+        }),
+      })
+
+      if (res.ok) {
+        setAppointmentDate(
+          `${format(new Date(data.date), 'yyyy-MM-dd')} ${data.time}`
+        )
+        setOpenModal(true)
+        reset()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  })
+
   return (
-    <ContactWrapper id="#contact">
+    <ContactWrapper id="contact">
       <img src="/static/images/appointment-img.jpg" alt="Appointment" />
-      <form>
+      <Form submitText="Make an appointment" onSubmit={handleContactForm}>
         <div className="input-span">
-          <input type="text" placeholder="Name" />
-          <input type="email" placeholder="Email Address" />
+          <FormInput
+            type="text"
+            placeholder="Name"
+            name="name"
+            register={register}
+            error={errors?.name}
+          />
+          <FormInput
+            type="email"
+            placeholder="Email Address"
+            name="email"
+            register={register}
+            error={errors?.email}
+          />
         </div>
         <div className="input-span">
-          <input type="text" placeholder="Select Service" />
-          <input type="email" placeholder="Phone Number" />
+          <FormSelect
+            placeholder="Select Service"
+            name="treatment"
+            options={treatment}
+            register={register}
+            error={errors?.treatment}
+          />
+          <FormInput
+            type="tel"
+            placeholder="Phone Number"
+            name="phone"
+            register={register}
+            error={errors?.phone}
+          />
         </div>
         <div className="input-span">
-          <input type="text" placeholder="dd-mm-åååå" />
-          <input type="email" placeholder="-:-" />
+          <FormInput
+            type="date"
+            placeholder="dd-mm-åååå"
+            name="date"
+            register={register}
+            error={errors?.date}
+          />
+          <FormInput
+            type="time"
+            name="time"
+            register={register}
+            error={errors?.time}
+          />
         </div>
-        <textarea rows="1" placeholder="Your Notes" />
-        <button className="secondary active" type="submit">
-          Make an appointment
-        </button>
-      </form>
+        <FormInput
+          type="textarea"
+          placeholder="Your Notes"
+          name="notes"
+          register={register}
+          error={errors?.notes}
+        />
+      </Form>
+
+      {openModal && (
+        <Modal
+          handleOpen={setOpenModal}
+          title="Thank you for making an appointment"
+          render={() => (
+            <>
+              <p>Date: {appointmentDate}</p>
+            </>
+          )}
+        />
+      )}
     </ContactWrapper>
   )
 }
@@ -35,40 +124,29 @@ const ContactWrapper = styled.section`
   grid-template-columns: 2fr 4fr;
   align-items: center;
 
+  ${mq[2]} {
+    grid-template-columns: 1fr;
+  }
+
   img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+
+    ${mq[2]} {
+      display: none;
+    }
   }
 
   form {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
+    width: 70%;
     margin: 4rem 6rem;
-    width: 60%;
 
-    .input-span {
-      display: flex;
-      gap: 1rem;
-    }
-
-    input,
-    textarea {
-      background-color: transparent;
-      border: none;
-      border-bottom: 0.2rem solid var(--color-gray-2) !important;
+    ${mq[2]} {
       width: 100%;
-      padding: 1.5rem 0;
-
-      &::placeholder {
-        text-transform: uppercase;
-      }
-    }
-
-    button {
-      align-self: flex-start;
+      margin: 0;
+      padding: 4rem 6rem;
     }
   }
 `

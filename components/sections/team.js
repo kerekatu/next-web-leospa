@@ -1,10 +1,11 @@
 import styled from '@emotion/styled'
 import Title from '@/components/common/title'
 import CONSTANTS from '@/lib/constants'
+import { mq } from '@/styles/global'
 
 const Team = ({ data }) => {
   return (
-    <TeamWrapper className="wrapper" id="#team">
+    <TeamWrapper className="wrapper" id="team">
       <Title
         title="Experienced Team"
         subtitle="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio cupiditate omnis sit. Eveniet, ratione magnam nobis."
@@ -21,6 +22,20 @@ const Team = ({ data }) => {
                 {item.firstname} {item.lastname}
               </h3>
               <p>{item.role}</p>
+              <div className="social">
+                <a href="facebook.com" target="_blank" title="Facebook">
+                  <i className="ti-facebook"></i>
+                </a>
+                <a href="twitter.com" target="_blank" title="Twitter">
+                  <i className="ti-twitter-alt"></i>
+                </a>
+                <a href="vimeo.com" target="_blank" title="Vimeo">
+                  <i className="ti-google"></i>
+                </a>
+                <a href="instagram.com" target="_blank" title="Instagram">
+                  <i className="ti-instagram"></i>
+                </a>
+              </div>
             </div>
           </li>
         ))}
@@ -39,8 +54,19 @@ const TeamWrapper = styled.section`
     margin: 5rem 0 14rem 0;
     text-align: center;
 
+    ${mq[1]} {
+      grid-template-columns: repeat(auto-fit, minmax(34rem, 1fr));
+      gap: 12rem 4rem;
+    }
+
     li {
       position: relative;
+    }
+
+    li:hover .social {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 1rem;
     }
 
     li img {
@@ -55,10 +81,14 @@ const TeamWrapper = styled.section`
       left: 50%;
       transform: translate(-50%);
       box-shadow: 0 0.2rem 2rem rgba(0, 0, 0, 0.1);
-      width: 80%;
+      width: 85%;
       background-color: var(--color-white);
       padding: 2rem;
-      height: 12rem;
+      min-height: 10rem;
+
+      ${mq[1]} {
+        bottom: -7rem;
+      }
 
       p {
         margin-top: 0.5rem;
@@ -69,6 +99,35 @@ const TeamWrapper = styled.section`
 
       h3 {
         font-weight: 700;
+      }
+
+      .social {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        opacity: 0;
+        visibility: none;
+        margin-top: -2rem;
+        transition: all 0.3s ease-in-out;
+
+        a {
+          color: var(--color-black-2);
+          border: 0.1rem solid var(--color-black-2);
+          border-radius: 100%;
+          padding: 0.6rem;
+          transition: all var(--transition);
+        }
+
+        a:hover {
+          color: var(--color-white);
+          background-color: var(--color-primary);
+          border: 0.1rem solid var(--color-primary);
+        }
+
+        a > i {
+          display: block;
+        }
       }
     }
   }
