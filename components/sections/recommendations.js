@@ -72,10 +72,10 @@ const Recommendations = ({ data }) => {
 
 const RecommendationsWrapper = styled.section`
   background-color: var(--color-secondary-2);
-  min-height: 50rem;
+  height: 50rem;
 
   ${mq[1]} {
-    min-height: 60rem;
+    height: 60rem;
   }
 
   display: flex;

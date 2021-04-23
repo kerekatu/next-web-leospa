@@ -52,7 +52,7 @@ const HeaderWrapper = styled.header`
   .logo {
     display: block;
     pointer-events: none;
-    margin-right: ${({ isHeaderHero }) => (isHeaderHero ? '15rem' : '0')};
+    margin-right: ${({ isHeaderHero }) => (isHeaderHero ? '13rem' : '0')};
 
     ${mq[2]} {
       height: 8rem;

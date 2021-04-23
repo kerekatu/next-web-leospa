@@ -13,6 +13,7 @@ const Contact = ({ data: treatment }) => {
   const [openModal, setOpenModal] = useState(false)
   const [appointmentDate, setAppointmentDate] = useState('')
   const { register, handleSubmit, errors, reset } = useForm({
+    defaultValues: appointmentSchema.cast(),
     resolver: yupResolver(appointmentSchema),
   })
 

@@ -45,7 +45,7 @@ const Modal = ({
             ref={modalRef}
           >
             {title && <h3>{title}</h3>}
-            {(children && render(children)) || children}
+            {children || (render && render(children))}
             {closeButton && (
               <button className="primary" onClick={() => handleOpen(false)}>
                 <i className="ti-close"></i>
